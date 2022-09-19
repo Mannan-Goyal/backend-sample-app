@@ -19,18 +19,35 @@ router.post('/create', async (req, res) => {
                 success: false,
             });
         }
+        if (req.body.meetingId) {
+            const apiRes = await getApi().addParticipantMID(req.body);
 
-        const apiRes = await getApi().addParticipant(req.body);
+            if (!apiRes.success) {
+                return res.status(500).json({
+                    sucess: false,
+                });
+            }
 
-        if (!apiRes.success) {
-            return res.status(500).json({
-                sucess: false,
+            return res.json({
+                success: true,
+                data: apiRes.data,
+            });
+        } if (req.body.roomName) {
+            const apiRes = await getApi().addParticipantRNA(req.body);
+
+            if (!apiRes.success) {
+                return res.status(500).json({
+                    sucess: false,
+                });
+            }
+
+            return res.json({
+                success: true,
+                data: apiRes.data,
             });
         }
-
-        return res.json({
-            success: true,
-            data: apiRes.data,
+        return res.status(400).json({
+            msg: 'Either meetingID or roomName should be supplied in the request body.',
         });
     } catch (error) {
         return res.status(500).json({
