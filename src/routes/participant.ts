@@ -32,7 +32,8 @@ router.post('/create', async (req, res) => {
                 success: true,
                 data: apiRes.data,
             });
-        } if (req.body.roomName) {
+        }
+        if (req.body.roomName) {
             const apiRes = await getApi().addParticipantRNA(req.body);
 
             if (!apiRes.success) {
